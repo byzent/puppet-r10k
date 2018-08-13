@@ -1,6 +1,6 @@
 # == Class: profiles::puppetmaster_standalone
 #
-#  Install and configure puppetmaster 
+#  Install and configure puppetmaster
 #
 # === Parameters
 #
@@ -28,27 +28,27 @@
 #
 # Copyright 2013 Your name here, unless otherwise noted.
 #
-
 class profile::puppetmaster_standalone(
-    $use_puppetdb=hiera('profiles::puppetmaster::use_puppetdb',false),
-    $use_puppetboard=hiera('profiles::puppetmaster::use_puppetboard',false)
+    $use_puppetdb    = lookup('profiles::puppetmaster::use_puppetdb',false),
+    $use_puppetboard = lookup('profiles::puppetmaster::use_puppetboard',false)
 ) {
 
   apt::source { 'puppetlabs':
-    location   => 'http://apt.puppetlabs.com',
-    repos      => 'main',
-    key        => {
-      id=> '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
-      server => 'pgp.mit.edu'
-    }
-  }->
-  class { 'puppetserver':
-    config => {
-      'java_args'     => {
-        'xms'   => '512m',
-        'xmx'   => '512m'
-      }
-    }
+    location => 'http://apt.puppetlabs.com',
+    repos    => 'main',
+    key      => {
+      id     => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
+      server => 'pgp.mit.edu',
+    },
+  }
+  class { '::puppetserver':
+    config  => {
+      'java_args' => {
+        'xms' => '512m',
+        'xmx' => '512m',
+      },
+    },
+    require => Apt::Source['puppetlabs'],
   }
 
   class { '::puppetserver::hiera::eyaml':
@@ -56,7 +56,7 @@ class profile::puppetmaster_standalone(
   }
 
   if $use_puppetdb {
-    class { 'puppetdb': }
+    class { '::puppetdb': }
 
     # No anchor in puppetdb module
     # We need ssl certificates to start jetty
@@ -64,24 +64,24 @@ class profile::puppetmaster_standalone(
     Class['puppetserver']->Package['puppetdb']
 
 
-    class { 'puppetdb::master::config':
+    class { '::puppetdb::master::config':
       manage_routes           => true,
       manage_storeconfigs     => true,
       manage_report_processor => true,
       enable_reports          => true,
-      strict_validation       => false
+      strict_validation       => false,
     }
 
     if $use_puppetboard {
-      class { 'apache': }
-      class { 'apache::mod::wsgi': }
+      class { '::apache': }
+      class { '::apache::mod::wsgi': }
 
-      class { 'puppetboard':
-        manage_virtualenv => "latest"
+      class { '::puppetboard':
+        manage_virtualenv => 'latest',
       }
 
-      class { 'puppetboard::apache::vhost':
-        vhost_name => hiera('profiles::puppetmaster::puppetboard_vhost',$::fqdn)
+      class { '::puppetboard::apache::vhost':
+        vhost_name => lookup('profiles::puppetmaster::puppetboard_vhost',$::fqdn),
       }
     }
   }

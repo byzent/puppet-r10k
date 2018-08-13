@@ -1,17 +1,17 @@
 node 'default' {
-  include role::agent
+  include ::role::agent
 
   notify { 'Default class for unknown node': }
 }
 
 node 'puppetmaster' {
-  include role::master
+  include ::role::master
 }
 
 node 'puppetdb' {
-  include role::puppetdb
+  include ::role::puppetdb
 }
 
 node 'puppetreports' {
-  include role::puppetreports
+  include ::role::puppetreports
 }

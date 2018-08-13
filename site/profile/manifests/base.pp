@@ -3,10 +3,9 @@
 #  Install packages
 #
 class profile::base {
-    include common::packages::install
+  include ::common::packages::install
 
-    notify { 'Message':
-        name     => hiera(message,"No message found")
-    }
+  notify { 'Message':
+    name => lookup('message','No message found'),
+  }
 }
-

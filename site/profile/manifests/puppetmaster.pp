@@ -23,27 +23,26 @@
 #
 # Copyright 2013 Your name here, unless otherwise noted.
 #
-
 class profile::puppetmaster(
-    $use_puppetdb=hiera('profiles::puppetmaster::use_puppetdb',false)
+    $use_puppetdb=lookup('profiles::puppetmaster::use_puppetdb',false)
 ) {
 
-  class { 'puppetserver':
+  class { '::puppetserver':
     config => {
-      'java_args'     => {
-        'xms'   => '512m',
-        'xmx'   => '512m'
-      }
-    }
+      'java_args' => {
+        'xms' => '512m',
+        'xmx' => '512m',
+      },
+    },
   }
-  contain 'puppetserver'
+  contain ::puppetserver
   # Ensure server starts before agent to avoid key issues
   # Service['puppetserver']->Service['puppet']
 
   $confdir = $::settings::confdir
   file { "${confdir}/autosign.conf":
-    ensure  => file,
-    content => epp('profile/puppetmaster/autosign.conf.epp',{ 'autosign_hosts' => hiera('profiles::puppetmaster::autosign_hosts',[])}),
+    ensure  => 'file',
+    content => epp('profile/puppetmaster/autosign.conf.epp',{ 'autosign_hosts' => lookup('profiles::puppetmaster::autosign_hosts',[])}),
   }
 
   class { '::puppetserver::hiera::eyaml':
@@ -53,16 +52,16 @@ class profile::puppetmaster(
 
   if $use_puppetdb {
 
-    class { 'puppetdb::master::config':
-      puppetdb_server             => hiera('puppetdb_host'),
+    class { ::puppetdb::master::config :
+      puppetdb_server             => lookup('puppetdb_host'),
       manage_routes               => true,
       manage_storeconfigs         => true,
       manage_report_processor     => true,
       enable_reports              => true,
       strict_validation           => false,
-      puppetdb_soft_write_failure => true
+      puppetdb_soft_write_failure => true,
     }
-    contain 'puppetdb::master::config'
+    contain '::puppetdb::master::config'
 
   }
 }

@@ -12,8 +12,7 @@
 #
 # Copyright 2013 Your name here, unless otherwise noted.
 #
-
 class profile::puppetdb(
 ) {
-  class { 'puppetdb': }
+  class { '::puppetdb': }
 }
