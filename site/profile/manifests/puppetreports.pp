@@ -20,7 +20,7 @@ class profile::puppetreports(
     wsgi_socket_prefix => '/var/run/wsgi',
   }
   class { '::puppetboard::apache::vhost':
-    vhost_name => lookup('profiles::puppetboard::puppetboard_vhost',$::fqdn),
+    vhost_name => lookup({'name' => 'profiles::puppetboard::puppetboard_vhost', 'default_value' => $::fqdn}),
   }
 
   $ssl_dir = $::settings::ssldir

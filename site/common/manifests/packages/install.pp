@@ -19,7 +19,7 @@
 #      provider: xxx
 #
 
-class common::packages::install( Optional[Hash] $packages = lookup(packages, {merge => 'deep'}) ) {
+class common::packages::install(Hash $packages = lookup({'name' => 'packages', 'default_value' => {}}) ) {
   if($packages) {
     create_resources('package', $packages)
   }

@@ -11,7 +11,7 @@
 # Copyright 2013 Your name here, unless otherwise noted.
 #
 class profile::puppetagent(
-    $puppetmaster = lookup('puppet_server','puppet')
+    $puppetmaster = lookup({'name' => 'puppetserver', 'default_value' => 'puppet'})
 ) {
 
   filebucket { 'puppetmaster':

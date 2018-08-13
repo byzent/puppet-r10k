@@ -6,6 +6,6 @@ class profile::base {
   include ::common::packages::install
 
   notify { 'Message':
-    name => lookup(message,'No message found'),
+    name => lookup({'name' => 'message', 'default_value' => 'No message found'}),
   }
 }

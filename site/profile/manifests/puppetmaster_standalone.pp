@@ -29,8 +29,8 @@
 # Copyright 2013 Your name here, unless otherwise noted.
 #
 class profile::puppetmaster_standalone(
-    $use_puppetdb    = lookup('profiles::puppetmaster::use_puppetdb',false),
-    $use_puppetboard = lookup('profiles::puppetmaster::use_puppetboard',false)
+    $use_puppetdb    = lookup({'name' => 'profiles::puppetmaster::use_puppetdb', 'default_value' => false}),
+    $use_puppetboard = lookup({'name' => 'profiles::puppetmaster::use_puppetboard', 'default_value' => false})
 ) {
 
   apt::source { 'puppetlabs':
@@ -81,7 +81,7 @@ class profile::puppetmaster_standalone(
       }
 
       class { '::puppetboard::apache::vhost':
-        vhost_name => lookup('profiles::puppetmaster::puppetboard_vhost',$::fqdn),
+        vhost_name => lookup({'name' => 'profiles::puppetmaster::puppetboard_vhost', 'default_value' => $::fqdn}),
       }
     }
   }
