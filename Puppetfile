@@ -1,6 +1,6 @@
 # Install modules from the forge with dependencies
 mod 'puppetlabs/stdlib'
-mod 'puppetlabs/apt'
+# mod 'puppetlabs/apt'
 mod 'puppetlabs/ntp'
 mod 'puppetlabs/apache'
 mod 'puppetlabs/concat'

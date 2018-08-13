@@ -1,4 +1,5 @@
 ---
+version: 5
 puppet_server: 'puppetmaster.vm.local'
 puppetdb_host: 'puppetdb.vm.local'
 

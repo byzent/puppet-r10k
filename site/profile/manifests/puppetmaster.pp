@@ -24,7 +24,7 @@
 # Copyright 2013 Your name here, unless otherwise noted.
 #
 class profile::puppetmaster(
-    $use_puppetdb=lookup('profiles::puppetmaster::use_puppetdb',false)
+    $use_puppetdb = lookup('profiles::puppetmaster::use_puppetdb',false)
 ) {
 
   class { '::puppetserver':
@@ -48,11 +48,11 @@ class profile::puppetmaster(
   class { '::puppetserver::hiera::eyaml':
     require => Class['puppetserver::install'],
   }
-  contain '::puppetserver::hiera::eyaml'
+  contain ::puppetserver::hiera::eyaml
 
   if $use_puppetdb {
 
-    class { ::puppetdb::master::config :
+    class { '::puppetdb::master::config' :
       puppetdb_server             => lookup('puppetdb_host'),
       manage_routes               => true,
       manage_storeconfigs         => true,
@@ -61,7 +61,7 @@ class profile::puppetmaster(
       strict_validation           => false,
       puppetdb_soft_write_failure => true,
     }
-    contain '::puppetdb::master::config'
+    contain ::puppetdb::master::config
 
   }
 }
