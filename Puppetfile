@@ -19,3 +19,7 @@ mod 'puppet/puppetboard'
 mod "puppetlabs/vcsrepo"
 mod "stahnma/epel"
 mod "puppet/python"
+# mod 'zpetr/couchdb', '1.0.0'
+mod 'couchdb',
+  :git => 'https://git.alliander.com/webhosting-puppet/puppet-module-couchdb.git',
+  :ref => 'production'

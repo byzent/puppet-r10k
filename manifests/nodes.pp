@@ -15,3 +15,7 @@ node 'puppetdb' {
 node 'puppetreports' {
   include ::role::puppetreports
 }
+
+node 'couchdb' {
+  include ::role::couchdb
+}
