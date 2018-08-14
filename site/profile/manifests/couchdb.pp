@@ -18,8 +18,8 @@ class profile::couchdb(String $version = lookup({'name' => 'profiles::couchdb::v
   include ::couchdb
   couchdb::instance{ 'main':
     version        => $version,
-    port           => '5985',
-    www_auth       => true,
+    port           => '5984',
+    www_auth       => false,
     admin_login    => 'admin',
     admin_password => 'admin',
   }
