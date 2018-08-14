@@ -15,50 +15,50 @@
 class profile::couchdb(
 ) {
 
-  # include couchdb
-  # couchdb::instance{ 'main':
-  #   version        => '1.6.1',
-  #   port           => '5985',
-  #   www_auth       => true,
-  #   admin_login    => 'admin',
-  #   admin_password => 'admin',
+  include couchdb
+  couchdb::instance{ 'main':
+    version        => '1.6.1',
+    port           => '5985',
+    www_auth       => true,
+    admin_login    => 'admin',
+    admin_password => 'admin',
+  }
+
+  couchdb::db{ 'cmdb': }
+
+  # couchdb::tools { 'couchdb-tools':
+  #   ensure => 'present',
   # }
 
-  # couchdb::db{ 'cmdb': }
+  # couchdb::install { 'couchdb-master':
+  #   data => {
+  #     '_id'                  => 'couchdb-dev',
+  #     'puppet'               => {
+  #       'type'     => 'define',
+  #       'manifest' => 'install',
+  #       'module'   => 'couchdb',
+  #     },
+  #     'managed_from_couchdb' => false,
+  #     'version'              => '1.6.1',
+  #     'type'                 => 'configuration',
+  #     'otap_environment'     => 'dev',
+  #     'configuration_type'   => 'couchdb',
+  #     'sub_configurations'   => [
+  #       'vm-couchdb',
+  #     ],
+  #     'ensure'               => 'present',
+  #   },
+  # }
 
-  couchdb::tools { 'couchdb-tools':
-    ensure => 'present',
-  }
+  # vagrant::couchdb::database { 'couchdb-cmdb':
+  #   ensure   => 'present',
+  #   database => 'cmdb',
+  # }
 
-  couchdb::install { 'couchdb-master':
-    data => {
-      '_id'                  => 'couchdb-dev',
-      'puppet'               => {
-        'type'     => 'define',
-        'manifest' => 'install',
-        'module'   => 'couchdb',
-      },
-      'managed_from_couchdb' => false,
-      'version'              => '1.6.1',
-      'type'                 => 'configuration',
-      'otap_environment'     => 'dev',
-      'configuration_type'   => 'couchdb',
-      'sub_configurations'   => [
-        'vm-couchdb',
-      ],
-      'ensure'               => 'present',
-    },
-  }
-
-  vagrant::couchdb::database { 'couchdb-cmdb':
-    ensure   => 'present',
-    database => 'cmdb',
-  }
-
-  firewall { '001 Couchdb':
-    proto  => 'tcp',
-    action => 'accept',
-    dport  => 5984,
-  }
+  # firewall { '001 Couchdb':
+  #   proto  => 'tcp',
+  #   action => 'accept',
+  #   dport  => 5984,
+  # }
 
 }
