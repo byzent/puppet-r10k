@@ -12,12 +12,12 @@
 #
 # Copyright 2018 Alliander B.V.
 #
-class profile::couchdb(
+class profile::couchdb( $version = lookup({'name' => 'profiles::couchdb::version', 'default_value' => '1.6.1'})
 ) {
 
   include ::couchdb
   couchdb::instance{ 'main':
-    version        => '1.6.1',
+    version        => $version,
     port           => '5985',
     www_auth       => true,
     admin_login    => 'admin',

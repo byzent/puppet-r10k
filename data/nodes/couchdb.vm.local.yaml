@@ -1,0 +1,12 @@
+---
+version: 5
+puppet_server: 'puppetmaster.vm.local'
+puppetdb_host: 'puppetdb.vm.local'
+
+packages:
+  vim: { ensure: 'present' }
+  tmux: { ensure: 'present' }
+  git: { ensure: 'present' }
+  tree: { ensure: 'present' }
+
+profiles::couchdb::version: '1.6.1'

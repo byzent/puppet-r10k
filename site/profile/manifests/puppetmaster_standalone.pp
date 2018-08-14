@@ -31,16 +31,21 @@
 class profile::puppetmaster_standalone(
     $use_puppetdb    = lookup({'name' => 'profiles::puppetmaster::use_puppetdb', 'default_value' => false}),
     $use_puppetboard = lookup({'name' => 'profiles::puppetmaster::use_puppetboard', 'default_value' => false})
+    $use_couchdb     = lookup({'name' => 'profiles::puppetmaster::use_couchdb', 'default_value' => false})
 ) {
 
-  apt::source { 'puppetlabs':
-    location => 'http://apt.puppetlabs.com',
-    repos    => 'main',
-    key      => {
-      id     => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
-      server => 'pgp.mit.edu',
-    },
+  if $os['name'] != 'CentOS' { # Ubuntu or Debian
+    apt::source { 'puppetlabs':
+      location => 'http://apt.puppetlabs.com',
+      repos    => 'main',
+      key      => {
+        id     => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
+        server => 'pgp.mit.edu',
+      },
+      before   => Class['puppetserver'],
+    }
   }
+
   class { '::puppetserver':
     config  => {
       'java_args' => {
@@ -48,7 +53,6 @@ class profile::puppetmaster_standalone(
         'xmx' => '512m',
       },
     },
-    require => Apt::Source['puppetlabs'],
   }
 
   class { '::puppetserver::hiera::eyaml':
@@ -84,5 +88,9 @@ class profile::puppetmaster_standalone(
         vhost_name => lookup({'name' => 'profiles::puppetmaster::puppetboard_vhost', 'default_value' => $::fqdn}),
       }
     }
+  }
+
+  if $use_couchdb {
+
   }
 }
