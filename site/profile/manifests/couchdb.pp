@@ -15,7 +15,7 @@
 class profile::couchdb(
 ) {
 
-  include couchdb
+  include ::couchdb
   couchdb::instance{ 'main':
     version        => '1.6.1',
     port           => '5985',
