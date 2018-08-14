@@ -15,7 +15,8 @@
 class profile::couchdb(String $version = lookup({'name' => 'profiles::couchdb::version', 'default_value' => '1.6.1'})
 ) {
 
-  include ::couchdb
+  contain ::couchdb
+
   couchdb::instance{ 'main':
     version        => $version,
     port           => '5984',

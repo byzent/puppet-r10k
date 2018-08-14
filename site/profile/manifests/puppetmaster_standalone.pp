@@ -34,7 +34,7 @@ class profile::puppetmaster_standalone(
     $use_couchdb     = lookup({'name' => 'profiles::puppetmaster::use_couchdb', 'default_value' => false})
 ) {
 
-  if $os['name'] != 'CentOS' { # Ubuntu or Debian
+  if $::os['name'] != 'CentOS' { # Ubuntu or Debian
     apt::source { 'puppetlabs':
       location => 'http://apt.puppetlabs.com',
       repos    => 'main',
